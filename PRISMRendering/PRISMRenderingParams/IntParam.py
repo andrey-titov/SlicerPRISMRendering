@@ -5,8 +5,8 @@ import vtk, qt, ctk, slicer
 
 class IntParam(Param):
   
-  def __init__(self, name, display_name, defaultValue, min, max):
-    Param.__init__(self, name, display_name)
+  def __init__(self, name, display_name, defaultValue, min, max, tooltip=None):
+    Param.__init__(self, name, display_name,tooltip)
     self.minValue = int(min)
     self.maxValue = int(max)
     self.defaultValue = int(defaultValue)

@@ -137,6 +137,23 @@ def registerSampleData():
         nodeNames='ChromaDepthPerceptionSampleData'
     )
 
+    SampleData.SampleDataLogic.registerCustomSampleDataSource(
+        # Category and sample name displayed in Sample Data module
+        category='PRISMSampleData',
+        sampleName='EchoVolumeRendererSampleData',
+        # Thumbnail should have size of approximately 260x280 pixels and stored in Resources/Icons folder.
+        # It can be created by Screen Capture module, "Capture all views" option enabled, "Number of images" set to "Single".
+        thumbnailFileName=os.path.join(iconsPath, 'EchoVolumeRendererSampleData.png'),
+        # Download URL and target file name
+        uris="https://ets-vis-interactive.github.io/SlicerPRISMRenderingDatabase/Volumes/CTA_Brain.mnc",
+        fileNames='EchoVolumeRendererSampleData.mnc',
+        # Checksum to ensure file integrity. Can be computed by this command:
+        #  import hashlib; print(hashlib.sha256(open(filename, "rb").read()).hexdigest())
+        checksums='SHA256:4278daf18bd75542d68305d56630e78379ca8cbe295e9cf4fa52bb318445858b',
+        # This node name will be used when the data set is loaded
+        nodeNames='EchoVolumeRendererSampleData'
+    )
+
 
 class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
     """Uses ScriptedLoadableModuleWidget base class, available at:
@@ -789,6 +806,7 @@ class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         for p in param_list:
             hideWidget = False
             Optional = False
+            
             for i in self.logic.volumes[self.logic.volumeIndex].customShader[
                 self.logic.volumes[self.logic.volumeIndex].shaderIndex].param_list:
                 if isinstance(i, BoolParam):
@@ -817,6 +835,10 @@ class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
                 p.SetupGUI(self, 0, TFIndex)
             try:
                 self.ui.customShaderParametersLayout.addRow(p.label, p.widget)
+                #Add the tooltip
+                if p.tooltip != None:
+                    p.label.setToolTip(p.tooltip)
+                    p.widget.setToolTip(p.tooltip)
                 if Optional:
                     self.logic.optionalWidgets[self.CSName + bool_param.name] += [p]
                     if hideWidget:

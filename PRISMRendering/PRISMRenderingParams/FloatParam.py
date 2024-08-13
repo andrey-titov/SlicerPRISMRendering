@@ -5,8 +5,8 @@ import vtk, qt, ctk, slicer
 
 class FloatParam(Param):
   
-  def __init__(self, name, display_name, defaultValue, min, max):
-    Param.__init__(self, name, display_name)
+  def __init__(self, name, display_name, defaultValue, min, max, tooltip = None):
+    Param.__init__(self, name, display_name, tooltip)
     self.minValue = min
     self.maxValue = max
     self.defaultValue = defaultValue

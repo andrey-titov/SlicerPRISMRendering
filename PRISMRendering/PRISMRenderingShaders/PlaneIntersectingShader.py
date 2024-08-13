@@ -9,7 +9,7 @@ from PRISMRenderingParams import *
 
 class PlaneIntersectingShader(CustomShader):
 
-  relativePositionParam = FloatParam("relativePosition", "Relative Position", 1.0, 0.0, 1.0)
+  relativePositionParam = FloatParam("relativePosition", "Relative Position", 1.0, 0.0, 1.0, tooltip="Defines the position relative to the plane.")
 
   entryParam = FourFParam("entry", "Entry", {'x': 0.0, 'y': 0.0, 'z': 0.0, 'w': 0.0})
 

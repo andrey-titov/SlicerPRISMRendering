@@ -9,7 +9,7 @@ from PRISMRenderingParams import *
 
 class SphereCarvingShader(CustomShader):
 
-  radiusParam = FloatParam("radius", "Radius", 50.0, 0.0, 100.0)
+  radiusParam = FloatParam("radius", "Radius", 50.0, 0.0, 100.0, tooltip="Sets the radius of the sphere.")
   centerParam = FourFParam("center", "Center", {'x': 0.0, 'y': 0.0, 'z': 0.0, 'w': 0.0})
 
   param_list = [radiusParam, centerParam]

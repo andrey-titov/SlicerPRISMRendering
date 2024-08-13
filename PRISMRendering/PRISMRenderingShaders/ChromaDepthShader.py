@@ -10,8 +10,8 @@ import math
 
 class ChromaDepthShader(CustomShader):
 
-  depthRangeParam = RangeParam("depthRange", "Depth Range", [0.0, 1.0])
-  
+  depthRangeParam = RangeParam("depthRange", "Depth Range", [0.0, 1.0], tooltip="Defines the range for depth-based chroma effect.")
+
   sCOParam = TransferFunctionParam("scalarColorMapping", "Scalar Color Mapping",'color', [[0, 1, 0, 0, 0.5, 0], [300, 0, 0, 1, 0.5, 0]])
   sOPParam = TransferFunctionParam("scalarOpacityMapping", "Scalar Opacity Mapping",'scalarOpacity', [])
   

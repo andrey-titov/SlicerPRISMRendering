@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, subprocess, platform
 import unittest
 import vtk, qt, ctk, slicer
 import numpy as np, math, time
@@ -169,3 +169,23 @@ class PRISMRenderingLogic(slicer.ScriptedLoadableModule.ScriptedLoadableModuleLo
         return True
       return False
 
+    def openFile(self, file_path):
+        """
+        Opens the file at the given file path in the default text editor.
+
+        :param file_path: The path to the file.
+        :type file_path: str
+        """
+        try:
+            if platform.system() == 'Windows':
+                os.startfile(file_path)
+            elif platform.system() == 'Darwin':  # macOS
+                subprocess.call(['open', file_path])
+            elif platform.system() == 'Linux':
+                subprocess.call(['xdg-open', file_path])
+            else:
+                print(f"Unsupported OS: {platform.system()}")
+        except FileNotFoundError:
+            print(f"File not found: {file_path}")
+        except IOError:
+            print(f"Error opening file: {file_path}")

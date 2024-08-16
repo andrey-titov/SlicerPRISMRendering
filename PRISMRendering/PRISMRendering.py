@@ -216,6 +216,7 @@ class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         self.ui.enableRotationCheckBox.toggled.connect(self.onEnableRotationCheckBoxToggled)
         self.ui.virtualRealityEnableButton.clicked.connect(self.onVirtualRealityButtonClicked)
         self.ui.virtualRealityReloadButton.clicked.connect(self.onVirtualRealityReloadClicked)
+        self.ui.openCustomShaderButton.clicked.connect(self.onOpenCustomShaderClicked)
 
         #On cache aussi la selection du volume aui sera dispo au moment où le shader sera choisi
         #On cache aussi la partie des parametres
@@ -507,6 +508,36 @@ class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         if hasattr(self.logic.volumes[self.logic.volumeIndex].customShader[self.logic.volumes[self.logic.volumeIndex].shaderIndex],'customShaderPoints'):
             self.logic.volumes[self.logic.volumeIndex].customShader[self.logic.volumes[self.logic.volumeIndex].shaderIndex].customShaderPoints.UpdateGUIFromValues(
                 self.logic)
+
+    def getCurrentShaderName(self):
+        """
+        Get the name of the current shader.
+
+        :return: Name of the current shader.
+        :rtype: str
+        """
+        return self.ui.customShaderCombo.currentText
+
+    def onOpenCustomShaderClicked(self, caller=None, event=None):
+        """
+        Open the custom shader editor.
+
+        :param caller: Caller of the function.
+        :param event: Event that triggered the function.
+        """
+        currentShaderName = self.getCurrentShaderName()
+
+        # il faut enlever les espace et ajouter a la fin Shader
+        currentShaderName = currentShaderName.replace(" ", "")
+        currentShaderNameFile = currentShaderName + "Shader"
+
+        #prends le repertoire actuelle
+        currentDir = os.path.dirname(os.path.realpath(__file__))
+
+        fullPath = currentDir+ "/PRISMRenderingShaders/" + currentShaderNameFile + ".py"
+
+        self.logic.openFile(fullPath)
+
 
     def onEnableRotationCheckBoxToggled(self, caller=None, event=None):
         """Function to enable rotating ROI box.

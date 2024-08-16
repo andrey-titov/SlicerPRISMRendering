@@ -3,11 +3,17 @@
 ## Introduction and Acknowledgements
 **Title**: SlicerPRISMRendering
 
-**Author(s)/Contributor(s)**: Tiphaine RICHARD, Student Intern at École de technologie supérieure (ÉTS), Montréal, Simon Drouin, Professor at ÉTS.
+**Author(s)/Contributor(s)**:
+
+- Simon DROUIN, Professor at ÉTS
+- Tiphaine RICHARD, Student Intern at École de technologie supérieure (ÉTS)
+- Camille HASCOËT, Student Intern at École de technologie supérieure (ÉTS)
+- Kylian PASQUEREAU, Student Intern at École de technologie supérieure (ÉTS)
+- Aurélie RASOLOMANANA, Student Intern at École de technologie supérieure (ÉTS)
 
 **License**: BSD
 
-**Contact**: Tiphaine RICHARD, tiphainejh@gmail.com
+**Contact**: Simon Drouin, simon.drouin@etsmtl.ca
 
 ## Module Description
 

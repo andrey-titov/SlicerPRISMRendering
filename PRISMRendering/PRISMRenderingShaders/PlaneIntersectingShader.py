@@ -35,7 +35,7 @@ class PlaneIntersectingShader(CustomShader):
 
   @classmethod
   def GetDisplayName(cls):
-    return 'Plane intersecting'
+    return 'Plane Intersecting'
 
   def setupShader(self):
     super(PlaneIntersectingShader,self).setupShader()

@@ -33,7 +33,7 @@ class EchoVolumeShader(CustomShader):
 
   @classmethod
   def GetDisplayName(cls):
-    return 'Echo Volume Renderer'
+    return 'Echo Volume'
   
   @classmethod
   def GetBasicDescription(cls):

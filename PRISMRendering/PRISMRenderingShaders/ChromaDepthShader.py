@@ -31,7 +31,7 @@ class ChromaDepthShader(CustomShader):
 
   @classmethod
   def GetDisplayName(cls):
-    return 'Chroma Depth Perception'
+    return 'Chroma Depth'
   
   @classmethod
   def GetBasicDescription(cls):

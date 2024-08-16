@@ -123,35 +123,35 @@ def registerSampleData():
     SampleData.SampleDataLogic.registerCustomSampleDataSource(
         # Category and sample name displayed in Sample Data module
         category='PRISMSampleData',
-        sampleName='ChromaDepthPerceptionSampleData',
+        sampleName='ChromaDepthSampleData',
         # Thumbnail should have size of approximately 260x280 pixels and stored in Resources/Icons folder.
         # It can be created by Screen Capture module, "Capture all views" option enabled, "Number of images" set to "Single".
-        thumbnailFileName=os.path.join(iconsPath, 'ChromaDepthPerception.png'),
+        thumbnailFileName=os.path.join(iconsPath, 'ChromaDepth.png'),
         # Download URL and target file name
         uris="https://ets-vis-interactive.github.io/SlicerPRISMRenderingDatabase/Volumes/CTA_Brain.mnc",
-        fileNames='ChromaDepthPerceptionSampleData.mnc',
+        fileNames='ChromaDepthSampleData.mnc',
         # Checksum to ensure file integrity. Can be computed by this command:
         #  import hashlib; print(hashlib.sha256(open(filename, "rb").read()).hexdigest())
         checksums='SHA256:4278daf18bd75542d68305d56630e78379ca8cbe295e9cf4fa52bb318445858b',
         # This node name will be used when the data set is loaded
-        nodeNames='ChromaDepthPerceptionSampleData'
+        nodeNames='ChromaDepthSampleData'
     )
 
     SampleData.SampleDataLogic.registerCustomSampleDataSource(
         # Category and sample name displayed in Sample Data module
         category='PRISMSampleData',
-        sampleName='EchoVolumeRendererSampleData',
+        sampleName='EchoVolumeSampleData',
         # Thumbnail should have size of approximately 260x280 pixels and stored in Resources/Icons folder.
         # It can be created by Screen Capture module, "Capture all views" option enabled, "Number of images" set to "Single".
-        thumbnailFileName=os.path.join(iconsPath, 'EchoVolumeRendererSampleData.png'),
+        thumbnailFileName=os.path.join(iconsPath, 'EchoVolumeSampleData.png'),
         # Download URL and target file name
         uris="https://ets-vis-interactive.github.io/SlicerPRISMRenderingDatabase/Volumes/CTA_Brain.mnc",
-        fileNames='EchoVolumeRendererSampleData.mnc',
+        fileNames='EchoVolumeSampleData.mnc',
         # Checksum to ensure file integrity. Can be computed by this command:
         #  import hashlib; print(hashlib.sha256(open(filename, "rb").read()).hexdigest())
         checksums='SHA256:4278daf18bd75542d68305d56630e78379ca8cbe295e9cf4fa52bb318445858b',
         # This node name will be used when the data set is loaded
-        nodeNames='EchoVolumeRendererSampleData'
+        nodeNames='EchoVolumeSampleData'
     )
 
 

@@ -4,9 +4,11 @@
 **Title**: SlicerPRISMRendering
 
 **Author(s)/Contributor(s)**: 
+* Simon DROUIN, Professor at ÉTS
 * Tiphaine RICHARD, Student Intern at École de technologie supérieure (ÉTS)
-* Simon Drouin, Professor at ÉTS
-* Camille Hascoët, Student Intern at École de technologie supérieure (ÉTS)
+* Camille HASCOËT, Student Intern at École de technologie supérieure (ÉTS)
+* Kylian PASQUEREAU, Student Intern at École de technologie supérieure (ÉTS)
+* Aurélie RASOLOMANANA, Student Intern at École de technologie supérieure (ÉTS)
 
 **License**: BSD
 

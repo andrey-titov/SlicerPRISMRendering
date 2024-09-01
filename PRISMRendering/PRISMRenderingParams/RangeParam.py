@@ -5,8 +5,8 @@ import vtk, qt, ctk, slicer
 
 class RangeParam(Param):
   
-  def __init__(self, name, display_name, range, default_value = None):
-    Param.__init__(self, name, display_name)
+  def __init__(self, name, display_name, range, default_value = None, tooltip=None):
+    Param.__init__(self, name, display_name,tooltip)
     self.range = range
     if default_value == None:
       self.min = range[0]

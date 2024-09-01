@@ -5,13 +5,13 @@ import logging
 
 class EchoVolumeShader(CustomShader):
 
-  threshold = FloatParam('threshold', 'Threshold', 20.0, 0.0, 100.0)
-  edgeSmoothing = FloatParam('edgeSmoothing', 'Edge Smoothing', 5.0, 0.0, 20.0)
-  depthRange = RangeParam('depthRange', 'Depth Range', [-150.0, 150.0], [-120.0, 10.0])
-  depthDarkening = IntParam('depthDarkening', 'Depth Darkening', 30, 0, 100)
-  depthColoringRange = RangeParam('depthColoringRange', 'Depth Coloring Range', [-50, 50], [-24, 23])
-  brightnessScale = FloatParam('brightnessScale', 'Brightness Scale', 120.0, 0.0, 200.0)
-  saturationScale = FloatParam('saturationScale', 'Saturation Scale', 120.0, 0.0, 200.0)
+  threshold = FloatParam('threshold', 'Threshold', 20.0, 0.0, 100.0, tooltip="Sets the threshold level for rendering.")
+  edgeSmoothing = FloatParam('edgeSmoothing', 'Edge Smoothing', 5.0, 0.0, 20.0, tooltip="Controls the smoothing of edges.")
+  depthRange = RangeParam('depthRange', 'Depth Range', [-150.0, 150.0], [-120.0, 10.0], tooltip="Defines the range for depth processing.")
+  depthDarkening = IntParam('depthDarkening', 'Depth Darkening', 30, 0, 100, tooltip="Adjusts the darkening effect with depth.")
+  depthColoringRange = RangeParam('depthColoringRange', 'Depth Coloring Range', [-50, 50], [-24, 23], tooltip="Specifies the range for depth-based coloring.")
+  brightnessScale = FloatParam('brightnessScale', 'Brightness Scale', 120.0, 0.0, 200.0, tooltip="Adjusts the scale of brightness.")
+  saturationScale = FloatParam('saturationScale', 'Saturation Scale', 120.0, 0.0, 200.0, tooltip="Adjusts the scale of color saturation.")
 
   param_list = [threshold, edgeSmoothing, depthRange, depthDarkening, depthColoringRange, brightnessScale, saturationScale]
 
@@ -33,7 +33,7 @@ class EchoVolumeShader(CustomShader):
 
   @classmethod
   def GetDisplayName(cls):
-    return 'Echo Volume Renderer'
+    return 'Echo Volume'
   
   @classmethod
   def GetBasicDescription(cls):

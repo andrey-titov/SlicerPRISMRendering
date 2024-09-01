@@ -5,11 +5,12 @@ import vtk, qt, ctk, slicer
 
 class Param:
   
-  def __init__(self, name,display_name):
+  def __init__(self, name,display_name,paramtooltip=None):
     self.name = name
     self.display_name = display_name
     self.customShader = None
     self.isShaderUpdater = False
+    self.tooltip = paramtooltip
 
   def setUniform(self, CustomShader):
     if self.isShaderUpdater:

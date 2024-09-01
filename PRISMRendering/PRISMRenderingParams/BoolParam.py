@@ -5,8 +5,8 @@ import vtk, qt, ctk, slicer
 
 class BoolParam(Param):
   
-  def __init__(self, name, display_name, defaultValue, optionalWidgets = []):
-    Param.__init__(self, name, display_name)
+  def __init__(self, name, display_name, defaultValue, optionalWidgets = [],tooltip=None):
+    Param.__init__(self, name, display_name,tooltip)
     self.defaultValue = defaultValue
     self.value = defaultValue
     self.optionalWidgets = optionalWidgets

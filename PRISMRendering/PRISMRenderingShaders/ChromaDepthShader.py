@@ -10,8 +10,8 @@ import math
 
 class ChromaDepthShader(CustomShader):
 
-  depthRangeParam = RangeParam("depthRange", "Depth Range", [0.0, 1.0])
-  
+  depthRangeParam = RangeParam("depthRange", "Depth Range", [0.0, 1.0], tooltip="Defines the range for depth-based chroma effect.")
+
   sCOParam = TransferFunctionParam("scalarColorMapping", "Scalar Color Mapping",'color', [[0, 1, 0, 0, 0.5, 0], [300, 0, 0, 1, 0.5, 0]])
   sOPParam = TransferFunctionParam("scalarOpacityMapping", "Scalar Opacity Mapping",'scalarOpacity', [])
   
@@ -24,13 +24,14 @@ class ChromaDepthShader(CustomShader):
     CustomShader.__init__(self, shaderPropertyNode, volumeNode)
     self.param_list = paramlist
     volumeRange = self.getVolumeRange(volumeNode)
+
     if volumeRange :
       self.param_list[0].setRange([(-1 * volumeRange), (volumeRange)])
     self.createMarkupsNodeIfNecessary(logic)
 
   @classmethod
   def GetDisplayName(cls):
-    return 'Chroma Depth Perception'
+    return 'Chroma Depth'
   
   @classmethod
   def GetBasicDescription(cls):
@@ -43,7 +44,7 @@ class ChromaDepthShader(CustomShader):
 
   def getVolumeRange(self, volumeNode):
     """Function to get the range of the current volume.
-    
+
     :param volumeNode: Current volume.
     :type volumeNode: vtkMRMLScalarVolumeNode
     

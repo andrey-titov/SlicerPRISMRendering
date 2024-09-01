@@ -10,11 +10,14 @@ from PRISMRenderingParams import *
 
 class OpacityPeelingShader(CustomShader):
 
-  TLowParam = FloatParam("T_low", "Low Threshold", 0.3, 0.0, 1.0)
-  THighParam = FloatParam("T_high", "High Threshold", 0.8, 0.01, 1.0)
-  radiusParam = FloatParam("radius", "Sphere Radius", 75.0, 0.0, 150.0)
+  TLowParam = FloatParam("T_low", "Low Threshold", 0.3, 0.0, 1.0, tooltip="Sets the minimum threshold value.")
+  
+  THighParam = FloatParam("T_high", "High Threshold", 0.8, 0.01, 1.0, tooltip="Sets the maximum threshold value.")
 
-  wantedLayerParam = IntParam("wantedLayer", "Wanted Layer", 1, 1, 20)
+  radiusParam = FloatParam("radius", "Sphere Radius", 75.0, 0.0, 150.0, tooltip="Adjusts the radius of the sphere.")
+
+  wantedLayerParam = IntParam("wantedLayer", "Wanted Layer", 1, 1, 20, tooltip="Specifies the layer to be targeted.")
+
 
   sphereParam = BoolParam("sphere", "Sphere Carving", 0, ['center', 'radius'])
 

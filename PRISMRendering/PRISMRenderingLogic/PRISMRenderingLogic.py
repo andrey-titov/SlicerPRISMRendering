@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, subprocess, platform
 import unittest
 import vtk, qt, ctk, slicer
 import numpy as np, math, time
@@ -13,6 +13,7 @@ from distutils.util import strtobool
 from inspect import signature
 import traceback
 import logging
+import SampleData
 
 from PRISMRenderingShaders.CustomShader import *
 from PRISMRenderingParams import *
@@ -50,8 +51,6 @@ class PRISMRenderingLogic(slicer.ScriptedLoadableModule.ScriptedLoadableModuleLo
         self.customShaderWithoutVolume = []
 
         self.volumes = []
-
-        self.samplesAvailable = ["Sphere Carving", "Outline", "Opacity Peeling", "Chroma Depth Perception"]
 
         self.addObservers()
 
@@ -137,3 +136,56 @@ class PRISMRenderingLogic(slicer.ScriptedLoadableModule.ScriptedLoadableModuleLo
         if volume.volumeNode == volumeNode :
           return i
       return -1
+    
+        
+    def getAllPRISMSampleData(self):
+      """List all the PRISM sample data available.
+      """
+      sampleDataList = []
+      # Create an instance of SampleDataLogic
+      sampleDataLogic = SampleData.SampleDataLogic()
+      
+      # Get the sample data sources by category
+      sampleDataSources = sampleDataLogic.sampleDataSourcesByCategory("PRISMSampleData")
+
+      for source in sampleDataSources:
+        sampleDataList.append(source.sampleName)
+      
+      return sampleDataList
+
+
+    def checkIfSampleDataExists(self, currentCustomShader):
+      """Checks if the sample data is already in the list of volumes.
+
+      :param currentCustomShader: Current custom shader to check. 
+      :type currentCustomShader: str
+      :return: True if the sample data is already in the list of volumes, False otherwise.
+      :rtype: bool
+      """
+      # Call the function to list the sample names
+      existingSampleDataList = self.getAllPRISMSampleData()
+      sampleName = currentCustomShader.replace(" ", "") + "SampleData"
+      if sampleName in existingSampleDataList:
+        return True
+      return False
+
+    def openFile(self, file_path):
+        """
+        Opens the file at the given file path in the default text editor.
+
+        :param file_path: The path to the file.
+        :type file_path: str
+        """
+        try:
+            if platform.system() == 'Windows':
+                os.startfile(file_path)
+            elif platform.system() == 'Darwin':  # macOS
+                subprocess.call(['open', file_path])
+            elif platform.system() == 'Linux':
+                subprocess.call(['xdg-open', file_path])
+            else:
+                print(f"Unsupported OS: {platform.system()}")
+        except FileNotFoundError:
+            print(f"File not found: {file_path}")
+        except IOError:
+            print(f"Error opening file: {file_path}")

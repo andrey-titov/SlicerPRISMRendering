@@ -9,10 +9,13 @@ from PRISMRenderingParams import *
 
 class OutlineShader(CustomShader):
   
-  gradStepParam = FloatParam("gradStep","Gradient Step", 0.001, 0.001, 0.02)
-  VATParam = FloatParam("VAT", "Virtual Alpha Lower Than", 0.85, 0.0, 1.0)
-  thresholdParam = FloatParam("threshold","Threshold", 0.05, 0.0, 0.5)
-  stepParam = RangeParam("step", "Step", [0.0, 1])
+  gradStepParam = FloatParam("gradStep", "Gradient Step", 0.001, 0.001, 0.02, tooltip="Step size for the gradient calculation in the shader.")
+
+  VATParam = FloatParam("VAT", "Virtual Alpha Lower Than", 0.85, 0.0, 1.0, tooltip="Threshold value below which the alpha value is considered virtual.")
+
+  thresholdParam = FloatParam("threshold", "Threshold", 0.05, 0.0, 0.5, tooltip="Defines the cutoff level for outlines.")
+
+  stepParam = RangeParam("step", "Step", [0.0, 1], tooltip="Adjusts the range for stepping in the shader.")
 
   param_list = [gradStepParam, VATParam, thresholdParam, stepParam]
   sampleValues = {"gradStep" : 0.001, "VAT" : 0.6, "threshold" : 0.11, "step" : [0.0, 0.46]}

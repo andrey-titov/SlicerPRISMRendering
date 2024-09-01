@@ -34,6 +34,12 @@ class PRISMRendering(ScriptedLoadableModule):
     """
 
     def __init__(self, parent):
+        """
+        Initializes the PRISMRendering class.
+
+        Args:
+            parent (slicer.ScriptedLoadableModule): The parent module.
+        """
         slicer.ScriptedLoadableModule.ScriptedLoadableModule.__init__(self, parent)
         self.parent.title = "PRISMRendering"  # TODO: make this more human readable by adding spaces
         self.parent.categories = [
@@ -117,18 +123,35 @@ def registerSampleData():
     SampleData.SampleDataLogic.registerCustomSampleDataSource(
         # Category and sample name displayed in Sample Data module
         category='PRISMSampleData',
-        sampleName='ChromaDepthPerceptionSampleData',
+        sampleName='ChromaDepthSampleData',
         # Thumbnail should have size of approximately 260x280 pixels and stored in Resources/Icons folder.
         # It can be created by Screen Capture module, "Capture all views" option enabled, "Number of images" set to "Single".
-        thumbnailFileName=os.path.join(iconsPath, 'ChromaDepthPerception.png'),
+        thumbnailFileName=os.path.join(iconsPath, 'ChromaDepth.png'),
         # Download URL and target file name
         uris="https://ets-vis-interactive.github.io/SlicerPRISMRenderingDatabase/Volumes/CTA_Brain.mnc",
-        fileNames='ChromaDepthPerceptionSampleData.mnc',
+        fileNames='ChromaDepthSampleData.mnc',
         # Checksum to ensure file integrity. Can be computed by this command:
         #  import hashlib; print(hashlib.sha256(open(filename, "rb").read()).hexdigest())
         checksums='SHA256:4278daf18bd75542d68305d56630e78379ca8cbe295e9cf4fa52bb318445858b',
         # This node name will be used when the data set is loaded
-        nodeNames='ChromaDepthPerceptionSampleData'
+        nodeNames='ChromaDepthSampleData'
+    )
+
+    SampleData.SampleDataLogic.registerCustomSampleDataSource(
+        # Category and sample name displayed in Sample Data module
+        category='PRISMSampleData',
+        sampleName='EchoVolumeSampleData',
+        # Thumbnail should have size of approximately 260x280 pixels and stored in Resources/Icons folder.
+        # It can be created by Screen Capture module, "Capture all views" option enabled, "Number of images" set to "Single".
+        thumbnailFileName=os.path.join(iconsPath, 'EchoVolumeSampleData.png'),
+        # Download URL and target file name
+        uris="https://ets-vis-interactive.github.io/SlicerPRISMRenderingDatabase/Volumes/CTA_Brain.mnc",
+        fileNames='EchoVolumeSampleData.mnc',
+        # Checksum to ensure file integrity. Can be computed by this command:
+        #  import hashlib; print(hashlib.sha256(open(filename, "rb").read()).hexdigest())
+        checksums='SHA256:4278daf18bd75542d68305d56630e78379ca8cbe295e9cf4fa52bb318445858b',
+        # This node name will be used when the data set is loaded
+        nodeNames='EchoVolumeSampleData'
     )
 
 
@@ -193,6 +216,7 @@ class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         self.ui.enableRotationCheckBox.toggled.connect(self.onEnableRotationCheckBoxToggled)
         self.ui.virtualRealityEnableButton.clicked.connect(self.onVirtualRealityButtonClicked)
         self.ui.virtualRealityReloadButton.clicked.connect(self.onVirtualRealityReloadClicked)
+        self.ui.openCustomShaderButton.clicked.connect(self.onOpenCustomShaderClicked)
 
         #On cache aussi la selection du volume aui sera dispo au moment où le shader sera choisi
         #On cache aussi la partie des parametres
@@ -366,8 +390,7 @@ class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
                 self.ui.customShaderCombo.setCurrentIndex(currentIndex)
                 # for specified sample data values if defined
                 if self.firstSampleDataSwitch:
-                    if self.logic.volumes[self.logic.volumeIndex].customShader[
-                        self.logic.volumes[self.logic.volumeIndex].shaderIndex].sampleValues != {}:
+                    if self.logic.volumes[self.logic.volumeIndex].customShader[self.logic.volumes[self.logic.volumeIndex].shaderIndex].sampleValues != {}:
                         for p in self.logic.volumes[self.logic.volumeIndex].customShader[
                             self.logic.volumes[self.logic.volumeIndex].shaderIndex].param_list:
                             if self.logic.volumes[self.logic.volumeIndex].customShader[
@@ -480,14 +503,41 @@ class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         :param caller: Caller of the function.
         :param event: Event that triggered the function.
         """
-        for p in self.logic.volumes[self.logic.volumeIndex].customShader[
-            self.logic.volumes[self.logic.volumeIndex].shaderIndex].param_list:
+        for p in self.logic.volumes[self.logic.volumeIndex].customShader[self.logic.volumes[self.logic.volumeIndex].shaderIndex].param_list:
             p.setValue(p.defaultValue, True)
-        if self.logic.volumes[self.logic.volumeIndex].customShader[
-            self.logic.volumes[self.logic.volumeIndex].shaderIndex].customShaderPoints is not None:
-            self.logic.volumes[self.logic.volumeIndex].customShader[
-                self.logic.volumes[self.logic.volumeIndex].shaderIndex].customShaderPoints.UpdateGUIFromValues(
+        if hasattr(self.logic.volumes[self.logic.volumeIndex].customShader[self.logic.volumes[self.logic.volumeIndex].shaderIndex],'customShaderPoints'):
+            self.logic.volumes[self.logic.volumeIndex].customShader[self.logic.volumes[self.logic.volumeIndex].shaderIndex].customShaderPoints.UpdateGUIFromValues(
                 self.logic)
+
+    def getCurrentShaderName(self):
+        """
+        Get the name of the current shader.
+
+        :return: Name of the current shader.
+        :rtype: str
+        """
+        return self.ui.customShaderCombo.currentText
+
+    def onOpenCustomShaderClicked(self, caller=None, event=None):
+        """
+        Open the custom shader editor.
+
+        :param caller: Caller of the function.
+        :param event: Event that triggered the function.
+        """
+        currentShaderName = self.getCurrentShaderName()
+
+        # il faut enlever les espace et ajouter a la fin Shader
+        currentShaderName = currentShaderName.replace(" ", "")
+        currentShaderNameFile = currentShaderName + "Shader"
+
+        #prends le repertoire actuelle
+        currentDir = os.path.dirname(os.path.realpath(__file__))
+
+        fullPath = currentDir+ "/PRISMRenderingShaders/" + currentShaderNameFile + ".py"
+
+        self.logic.openFile(fullPath)
+
 
     def onEnableRotationCheckBoxToggled(self, caller=None, event=None):
         """Function to enable rotating ROI box.
@@ -613,37 +663,17 @@ class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
                 self.logic.volumes[self.logic.volumeIndex].customShader[self.logic.volumes[self.logic.volumeIndex].shaderIndex].customShaderPoints.endPoints.SetDisplayVisibility(0)
 
         if self.ui.customShaderCombo.currentText != "None":
-            #If there is no volume
+            #If there is a volume
             if self.ui.imageSelector.currentNode() is not None:
+                if not self.logic.volumes :
+                    self.logic.setupVolume(self.ui.imageSelector.currentNode(), self.ui.customShaderCombo.currentIndex)
                 self.logic.volumes[self.logic.volumeIndex].setCustomShaderType(self.ui.customShaderCombo.currentText)
-                self.logic.volumes[self.logic.volumeIndex].customShader[
-                    self.logic.volumes[self.logic.volumeIndex].shaderIndex].setupShader()
+                self.logic.volumes[self.logic.volumeIndex].customShader[self.logic.volumes[self.logic.volumeIndex].shaderIndex].setupShader()
 
                 self.UpdateShaderParametersUI()
                 self.updateWidgetParameterNodeFromGUI(self.ui.customShaderCombo.currentText, self.ui.customShaderCombo)
 
-            #If a volume is existing
-            """else:
-                shaderNameList = []
-                for i in self.logic.customShaderWithoutVolume:
-                    shaderNameList.append(i[0])
-                if self.ui.customShaderCombo.currentText not in shaderNameList:
-                    self.logic.currentShader = CustomShader.InstanciateCustomShader(
-                        self.ui.customShaderCombo.currentText, slicer.vtkMRMLShaderPropertyNode(), None, None)
-                    self.logic.customShaderWithoutVolume.append(
-                        [self.ui.customShaderCombo.currentText, self.logic.currentShader])
-                else:
-                    for shader in self.logic.customShaderWithoutVolume:
-                        if shader[0] == self.ui.customShaderCombo.currentText:
-                            self.logic.currentShader = shader[1]
-                            break"""
-
-        # If there is no selected shader, disables the buttons.
-        if self.ui.customShaderCombo.currentText == "None":
-            self.ui.openCustomShaderButton.setEnabled(False)
-            self.ui.reloadCurrentCustomShaderButton.setEnabled(False)
-        else:
-            if self.ui.customShaderCombo.currentText in self.logic.samplesAvailable:
+            if self.logic.checkIfSampleDataExists(self.ui.customShaderCombo.currentText):
                 self.ui.sampleDataButton.setEnabled(True)
             else:
                 self.ui.sampleDataButton.setEnabled(False)
@@ -653,6 +683,14 @@ class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
             if self.ui.imageSelector.currentNode is not None:
                 self.ui.viewSetupCollapsibleButton.show()
                 self.ui.volumeRenderingCheckBox.show()
+
+        # If there is no selected shader, disables the buttons.
+        else:
+            self.ui.openCustomShaderButton.setEnabled(False)
+            self.ui.reloadCurrentCustomShaderButton.setEnabled(False)
+            self.UpdateShaderParametersUI()
+
+
 
         # TODO: fix this. The tooltip should only be related to shader and shouldn't have anything to do with volume index
         #self.ui.customShaderCollapsibleButton.setToolTip(self.logic.volumes[self.logic.volumeIndex].customShader[self.logic.volumes[self.logic.volumeIndex].shaderIndex].GetBasicDescription())
@@ -760,7 +798,15 @@ class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         """Updates the shader parameters on the UI.
 
       """
-        if self.ui.customShaderCombo.currentText is None:
+        if self.ui.customShaderCombo.currentText == "None":
+            # Clear all the widgets except the combobox selector
+            while self.ui.customShaderParametersLayout.count() != 1:
+                ## Item of the combobox
+                item = self.ui.customShaderParametersLayout.takeAt(self.ui.customShaderParametersLayout.count() - 1)
+                if item is not None:
+                    widget = item.widget()
+                    if widget is not None:
+                        widget.setParent(None)
             return
 
         if hasattr(self.logic.volumes[self.logic.volumeIndex].customShader[self.logic.volumes[self.logic.volumeIndex].shaderIndex],'customShaderPoints'):  # if the new shader has points
@@ -791,6 +837,7 @@ class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         for p in param_list:
             hideWidget = False
             Optional = False
+            
             for i in self.logic.volumes[self.logic.volumeIndex].customShader[
                 self.logic.volumes[self.logic.volumeIndex].shaderIndex].param_list:
                 if isinstance(i, BoolParam):
@@ -819,6 +866,10 @@ class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
                 p.SetupGUI(self, 0, TFIndex)
             try:
                 self.ui.customShaderParametersLayout.addRow(p.label, p.widget)
+                #Add the tooltip
+                if p.tooltip != None:
+                    p.label.setToolTip(p.tooltip)
+                    p.widget.setToolTip(p.tooltip)
                 if Optional:
                     self.logic.optionalWidgets[self.CSName + bool_param.name] += [p]
                     if hideWidget:

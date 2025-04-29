@@ -307,6 +307,9 @@ class PRISMRenderingWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         self.ui.virtualRealityStatusLabel.hide()
         self.ui.virtualRealityReloadButton.hide()
 
+        # The volume selector combobox may already have a selected volume, initialize the GUI with that
+        self.onImageSelectorChanged(self.ui.imageSelector.currentNode(), self.ui.imageSelector)
+
     def onSceneStartClose(self, caller, event) -> None:
         """Called just before the scene is closed."""
         # Parameter node will be reset, do not use it anymore
